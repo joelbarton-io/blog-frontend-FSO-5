@@ -15,7 +15,7 @@ const App = () => {
 
   const [user, setUser] = useState(null)
   const [blogs, setBlogs] = useState([])
-  const [message, setMessage] = useState(null)
+  const [message, setMessage] = useState('')
 
   useEffect(() => {
     const currentUser = window.localStorage.getItem('loggedInBlogUser')
@@ -63,7 +63,7 @@ const App = () => {
         const blog = await blogService.create(newBlog)
         setBlogs((prevBlogs) => prevBlogs.concat(blog))
         setMessage(`a new blog ${blog.title} by ${blog.author} was added`)
-        setTimeout(() => setMessage(null), TIME_OUT)
+        setTimeout(() => setMessage(''), TIME_OUT)
       } catch (exception) {
         console.error(exception.response.data)
       }
@@ -80,10 +80,10 @@ const App = () => {
         window.localStorage.setItem('loggedInBlogUser', JSON.stringify(user))
         setUser(user)
         setMessage(`successful login for: ${user.username}`)
-        setTimeout(() => setMessage(null), TIME_OUT)
+        setTimeout(() => setMessage(''), TIME_OUT)
       } catch (exception) {
         setMessage(exception.response.data.error)
-        setTimeout(() => setMessage(null), TIME_OUT)
+        setTimeout(() => setMessage(''), TIME_OUT)
       }
     }
     return (
@@ -109,7 +109,7 @@ const App = () => {
       setMessage(`${user.name} was successfully logged out`)
       setUser(null)
       window.localStorage.clear()
-      setTimeout(() => setMessage(null), TIME_OUT)
+      setTimeout(() => setMessage(''), TIME_OUT)
     }
 
     return (

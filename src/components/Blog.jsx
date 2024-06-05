@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import styles from './Blog.module.css'
+import PropTypes from 'prop-types'
 
 const Blog = ({ blog, blogOps, userId }) => {
   const [visible, setVisible] = useState(false)
@@ -62,4 +63,24 @@ const Blog = ({ blog, blogOps, userId }) => {
   )
 }
 
+Blog.propTypes = {
+  blog: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    author: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    likes: PropTypes.number.isRequired,
+    user: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      username: PropTypes.string.isRequired,
+      id: PropTypes.string.isRequired,
+    }),
+    id: PropTypes.string.isRequired,
+  }),
+  blogOps: PropTypes.shape({
+    like: PropTypes.func.isRequired,
+    delete: PropTypes.func.isRequired,
+    create: PropTypes.func.isRequired,
+  }),
+  userId: PropTypes.string.isRequired,
+}
 export default Blog

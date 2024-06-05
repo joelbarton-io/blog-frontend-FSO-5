@@ -18,15 +18,14 @@ const Blog = ({ blog, blogOps, userId }) => {
     if (!userConfirmDelete) return
     blogOps.delete(blog.id)
   }
-  const userOwnsBlog = () => {
-    return blog.user === userId
-  }
+
+  const userOwnsBlog = () => blog.user === userId
 
   const toggleVisibility = () => setVisible((prev) => !prev)
 
-  const justTitle = () => (
+  const titleAndAuthor = () => (
     <div className={styles.blogTitle} onClick={toggleVisibility}>
-      {blog.title}
+      {blog.title} - {blog.author}
     </div>
   )
 
@@ -58,7 +57,42 @@ const Blog = ({ blog, blogOps, userId }) => {
   }
   return (
     <div className={styles.blogContainer}>
-      {visible ? allDetails() : justTitle()}
+      {visible ? (
+        <article className={styles.blogDetails}>
+          <div
+            className={styles.blogTitle}
+            onClick={toggleVisibility}
+            data-testid="blog-title-author"
+          >
+            {blog.title} - {blog.author}
+          </div>
+          <div data-testid="blog-url">
+            <b>url</b> {blog.url}
+          </div>
+          <div>
+            <b>user</b> {blog.user.name}
+          </div>
+          <div data-testid="blog-likes">
+            {blog.likes} <b>likes</b>{' '}
+            <button onClick={likeBlog} className={styles.likeButton}>
+              like
+            </button>
+            {userOwnsBlog ? (
+              <button onClick={deleteBlog} className={styles.deleteButton}>
+                delete
+              </button>
+            ) : null}
+          </div>
+        </article>
+      ) : (
+        <div
+          className={styles.blogTitle}
+          onClick={toggleVisibility}
+          data-testid="blog-title-author"
+        >
+          {blog.title} - {blog.author}
+        </div>
+      )}
     </div>
   )
 }

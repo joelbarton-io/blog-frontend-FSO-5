@@ -1,12 +1,24 @@
 import { useState } from 'react'
 import styles from './Blog.module.css'
 
-const Blog = ({ blog, handleLike }) => {
+const Blog = ({ blog, blogOps, userId }) => {
   const [visible, setVisible] = useState(false)
 
   const likeBlog = (e) => {
     e.preventDefault()
-    handleLike(blog)
+    blogOps.like(blog)
+  }
+
+  const deleteBlog = (e) => {
+    e.preventDefault()
+    const userConfirmDelete = window.confirm(
+      `Delete blog: ${blog.title} by ${blog.author}?`
+    )
+    if (!userConfirmDelete) return
+    blogOps.delete(blog.id)
+  }
+  const userOwnsBlog = () => {
+    return blog.user === userId
   }
 
   const toggleVisibility = () => setVisible((prev) => !prev)
@@ -32,8 +44,13 @@ const Blog = ({ blog, handleLike }) => {
         <div>
           {blog.likes} <b>likes</b>{' '}
           <button onClick={likeBlog} className={styles.likeButton}>
-            Like
+            like
           </button>
+          {userOwnsBlog ? (
+            <button onClick={deleteBlog} className={styles.deleteButton}>
+              delete
+            </button>
+          ) : null}
         </div>
       </article>
     )
